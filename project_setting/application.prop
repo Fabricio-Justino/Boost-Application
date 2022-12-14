@@ -1,0 +1,4 @@
+URL_CONNECTION = jdbc:sqlite:C:/OneDrive/Projects-work/Java projects (inteliJ)/Reflection_DB/database/Application.db
+INSERT_IF_NOT_EXISTS = true
+CREATE_IF_NOT_EXISTS = true
+ALTER_LIMIT = 1
