@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
+@Constraint
 public @interface VarChar {
 
     int value() default 255;

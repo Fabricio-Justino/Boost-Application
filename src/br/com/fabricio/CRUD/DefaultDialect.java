@@ -11,28 +11,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class DefaultDialect implements Dialect {
-    private Map<Class<?>, String> dialect;
+public class DefaultDialect extends Dialect {
+
 
 
     public DefaultDialect() {
-        this.dialect = new HashMap<>();
-        configure(this.dialect);
+        super();
+        super.allowAllProperties();
     }
 
-
-    @Override
-    public String get(Class<?> cls) {
-        return this.dialect.get(cls);
-    }
-
-    @Override
-    public String get(Class<?> cls, Field field) {
-        if (!verifyIfThereIsConstrained(field))
-            return this.get(cls);
-
-        return null;
-    }
 
     @Override
     public void configure(Map<Class<?>, String> dialect) {
@@ -44,11 +31,6 @@ public class DefaultDialect implements Dialect {
         dialect.put(double.class, "FLOAT");
         dialect.put(boolean.class, "BIT");
 
-    }
 
-    @Override
-    public boolean verifyIfThereIsConstrained(Field field) {
-
-        return false;
     }
 }

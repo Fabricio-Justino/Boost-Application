@@ -2,10 +2,8 @@ package br.com.fabricio.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+
 public enum ReadProperties {
     INSTANCE;
     final private Map<String, String> propertiesMap;
@@ -55,5 +53,9 @@ public enum ReadProperties {
 
     public String get(String key) {
         return this.propertiesMap.get(key);
+    }
+
+    public Optional<String> getIfExistsKey(String key) {
+        return Optional.ofNullable(this.propertiesMap.get(key));
     }
 }
