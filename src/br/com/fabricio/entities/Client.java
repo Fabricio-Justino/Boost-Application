@@ -1,17 +1,22 @@
 package br.com.fabricio.entities;
 
 import br.com.fabricio.anottation.Entity;
-import br.com.fabricio.anottation.constraint.Decimal;
+import br.com.fabricio.anottation.Setter;
+import br.com.fabricio.anottation.UsingSetters;
 import br.com.fabricio.anottation.constraint.Id;
 import br.com.fabricio.anottation.constraint.NotNull;
 
 @Entity
+@UsingSetters
 public class Client {
 
     @NotNull
     @Id
     private String cpf;
-    private String name, lastName;
+
+    private String name;
+
+    private String lastName;
     private double balance;
 
     public Client() {
@@ -65,5 +70,11 @@ public class Client {
         return getCpf() != null ? getCpf().hashCode() : 0;
     }
 
-
+    @Override
+    public String toString() {
+        return """
+                nome: %s %s
+                cpf: %s
+                """.formatted(this.name, this.lastName, this.cpf);
+    }
 }

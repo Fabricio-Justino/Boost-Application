@@ -32,4 +32,8 @@ public class TextFormat {
     public static String splitSkipJoin(String text, String splitRegex, int skipCount) {
         return Arrays.stream(text.split(splitRegex)).skip(skipCount).collect(Collectors.joining(", "));
     }
+
+    public static String title(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1, text.length());
+    }
 }

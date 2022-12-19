@@ -77,6 +77,10 @@ public class QueryCreator {
         return query;
     }
 
+    public static String findAll(Class<?> table) {
+        return "SELECT * FROM " + makeTableName(table);
+    }
+
     public static String insertInto(Class<?> table, Object target) {
         String query = null;
         ArrayList<String> columns = new ArrayList<>();
@@ -100,6 +104,20 @@ public class QueryCreator {
         query = "INSERT %s INTO %s (%s) VALUES (%s)".formatted(IGNORE, makeTableName(table), COLUMNS, VALUES);
 
         return query;
+    }
+
+    public static String makeTableName(Class<?> table) {
+        if (table.isAnnotationPresent(Table.class))
+            return table.getAnnotation(Table.class).name();
+        else
+            return TextFormat.toSnakeCase(table.getSimpleName());
+    }
+
+    public static String makeColumnName(Field field) {
+        if (field.isAnnotationPresent(Column.class))
+            return field.getAnnotation(Table.class).name();
+        else
+            return TextFormat.toSnakeCase(field.getName());
     }
 
     private static void createHeader(StringBuilder builder, Class<?> cls) {
@@ -138,6 +156,9 @@ public class QueryCreator {
         builder.append("%s\n".formatted((!isLastField) ? "," : ""));
     }
 
+    public static Optional<Field> getIdOf(Class<?> table) {
+        return Arrays.stream(table.getDeclaredFields()).filter(f -> f.isAnnotationPresent(Id.class)).findAny();
+    }
     private static void typeFind(StringBuilder builder, Field field) {
         if (field.getType().isAssignableFrom(String.class)) {
             if (field.isAnnotationPresent(VarChar.class))
@@ -146,10 +167,6 @@ public class QueryCreator {
                 builder.append("TEXT ");
         }
             dialect.get(field.getType()).ifPresent(str -> builder.append(str + " "));
-    }
-    
-    private static Optional<Field> getIdOf(Class<?> table) {
-        return Arrays.stream(table.getDeclaredFields()).filter(f -> f.isAnnotationPresent(Id.class)).findAny();
     }
 
     private static List<Field> getFielsWithAnnotation(Class<?> table, Class<? extends Annotation> annotation) {
@@ -160,17 +177,5 @@ public class QueryCreator {
         return Arrays.asList(fields).stream().filter(field -> field.isAnnotationPresent(annotation)).toList();
     }
 
-    private static String makeTableName(Class<?> table) {
-        if (table.isAnnotationPresent(Table.class))
-            return table.getAnnotation(Table.class).name();
-        else
-            return TextFormat.toSnakeCase(table.getSimpleName());
-    }
 
-    private static String makeColumnName(Field field) {
-        if (field.isAnnotationPresent(Column.class))
-            return field.getAnnotation(Table.class).name();
-        else
-            return TextFormat.toSnakeCase(field.getName());
-    }
 }

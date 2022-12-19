@@ -13,4 +13,6 @@ public class BoostApplication {
     private static void createTables(Class<?> loader) {
         System.out.println(loader.getResource("br\\"));
     }
+
+
 }
